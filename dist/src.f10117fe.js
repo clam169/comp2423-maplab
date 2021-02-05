@@ -102245,8 +102245,10 @@ exports['zh_TW'] = require('./locales/zh_TW');
 var Faker = require('./lib');
 var faker = new Faker({ locales: require('./lib/locales') });
 module['exports'] = faker;
-},{"./lib":"node_modules/faker/lib/index.js","./lib/locales":"node_modules/faker/lib/locales.js"}],"src/index.ts":[function(require,module,exports) {
+},{"./lib":"node_modules/faker/lib/index.js","./lib/locales":"node_modules/faker/lib/locales.js"}],"src/Student.ts":[function(require,module,exports) {
 "use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var __importDefault = this && this.__importDefault || function (mod) {
   return mod && mod.__esModule ? mod : {
@@ -102257,27 +102259,131 @@ var __importDefault = this && this.__importDefault || function (mod) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.Student = void 0;
 
 var faker_1 = __importDefault(require("faker"));
 
-console.log("this is working");
-faker_1.default; // Initialize and add the map
+var Student = function Student() {
+  _classCallCheck(this, Student);
 
-var map;
+  this.firstName = faker_1.default.name.firstName();
+  this.lastName = faker_1.default.name.lastName();
+  this.location = {
+    latitude: parseFloat(faker_1.default.address.latitude()),
+    longitude: parseFloat(faker_1.default.address.longitude())
+  };
+};
 
-function initMap() {
-  console.log(document.getElementById("map"));
-  map = new google.maps.Map(document.getElementById("map"), {
-    center: {
-      lat: 0,
-      lng: 0
-    },
-    zoom: 8
-  });
-}
+exports.Student = Student;
+},{"faker":"node_modules/faker/index.js"}],"src/Internship.ts":[function(require,module,exports) {
+"use strict";
 
-initMap();
-},{"faker":"node_modules/faker/index.js"}],"../../../../../../AppData/Roaming/npm/node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Internship = void 0;
+
+var faker_1 = __importDefault(require("faker"));
+
+var Internship = function Internship() {
+  _classCallCheck(this, Internship);
+
+  this.businessName = faker_1.default.company.companyName();
+  this.location = {
+    latitude: parseFloat(faker_1.default.address.latitude()),
+    longitude: parseFloat(faker_1.default.address.longitude())
+  };
+};
+
+exports.Internship = Internship;
+},{"faker":"node_modules/faker/index.js"}],"src/Map.ts":[function(require,module,exports) {
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.CustomizedMap = void 0;
+
+var Student_1 = require("./Student");
+
+var CustomizedMap = /*#__PURE__*/function () {
+  function CustomizedMap(divId) {
+    _classCallCheck(this, CustomizedMap);
+
+    this.googleMap = new google.maps.Map(document.getElementById(divId), {
+      zoom: 1,
+      center: {
+        lat: 0,
+        lng: 0
+      }
+    });
+  }
+
+  _createClass(CustomizedMap, [{
+    key: "addPin",
+    value: function addPin(pinnable) {
+      var messageContent;
+
+      if (pinnable instanceof Student_1.Student) {
+        messageContent = "".concat(pinnable.firstName, " ").concat(pinnable.lastName);
+      } else {
+        messageContent = "Welcome to ".concat(pinnable.businessName, "'s internship!");
+      }
+
+      var infoWindow = new google.maps.InfoWindow({
+        content: messageContent
+      });
+      var marker = new google.maps.Marker({
+        map: this.googleMap,
+        position: {
+          lat: pinnable.location.latitude,
+          lng: pinnable.location.longitude
+        }
+      });
+      marker.addListener("click", function () {
+        infoWindow.open(this.googleMap, this);
+      });
+    }
+  }]);
+
+  return CustomizedMap;
+}();
+
+exports.CustomizedMap = CustomizedMap;
+},{"./Student":"src/Student.ts"}],"src/index.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var Student_1 = require("./Student");
+
+var Internship_1 = require("./Internship");
+
+var Map_1 = require("./Map");
+
+var map = new Map_1.CustomizedMap("map");
+var student = new Student_1.Student();
+var internship = new Internship_1.Internship();
+map.addPin(student);
+map.addPin(internship);
+map.addStudentMarker(student);
+},{"./Student":"src/Student.ts","./Internship":"src/Internship.ts","./Map":"src/Map.ts"}],"../../../../../../AppData/Roaming/npm/node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -102305,7 +102411,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55813" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49438" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
